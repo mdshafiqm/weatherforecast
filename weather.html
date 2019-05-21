@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
+<script>
+$(document).ready(function(){
+  $("button").click(function(){
+	  var city=$('#city').val();
+	  var url = 'https://cors-anywhere.herokuapp.com/https://samples.openweathermap.org/data/2.5/forecast?q='.concat(city).concat(',IN&appid=b6907d289e10d714a6e88b30761fae22');
+	  $.get(url)
+	     .done(function(response) {
+	    	 //var t = $('#example').DataTable();
+	    	 $("#example").DataTable()
+				.clear()
+				.draw();
+	    	 $("#example").show();
+	           var i;
+	           for(i=0;i<response.list.length;i++){
+	        	   $("#example").DataTable().row
+					.add([response.list[i].dt_txt,
+						response.list[i].main.temp,
+						response.list[i].weather[0].main,
+						response.list[i].weather[0].description,
+						response.list[i].weather[0].id])
+					.draw();
+	           }
+	     });
+  });
+});
+</script>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Wipro Test</title>
+</head>
+<body>
+	<div style="border: 1px maroon;">
+		<fieldset>
+			<div id="cityDiv" align="center">
+				<label>City </label>
+				<input type="text" id="city">
+			</div>
+			<br>
+			<div align="center">
+				<button id="submitButton">Submit</button>
+			</div>
+		</fieldset>	
+	</div>
+<div>
+<table id="example" class="display" style="width:100%">
+        <thead>
+            <tr >
+                <th>Date</th>
+                <th>Temp</th>
+                <th>Main</th>
+                <th>Description</th>
+                <th>ID</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+</body>
+</html>
